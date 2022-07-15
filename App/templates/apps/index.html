@@ -1,0 +1,64 @@
+{% extends 'apps/base.html' %}
+
+
+{% block title %} CRUD con Django {% endblock %}
+{% block content %}
+
+<h1 class="text-center">CRUD con Django</h1>
+
+{% if user.is_authenticated %}
+{% if task_update %}
+<form action="{% url 'Update' %}" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="title-task" class="form-label">Titulo de la tarea:</label>
+        <input class="form-control" id="title-task" type="text" value="{{task_update.subject}}" name="subject" aria-label="default input example">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Descripcion de la tarea:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3">{{task_update.description}}</textarea>
+    </div>
+    <input type="hidden" name="id" value="{{task_update.id}}">
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+{% else %}
+<form action="{% url 'Insert' %}" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="title-task" class="form-label">Titulo de la tarea:</label>
+        <input class="form-control" id="title-task" type="text" name="subject" aria-label="default input example">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Descripcion de la tarea:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear tarea</button>
+</form>
+{% endif %}
+
+{% for task in tasks %}
+
+<div class="my-5">
+    <div class="card">
+        <div class="card-header">
+            {{task.subject}}
+            <span class="badge bg-secondary">New</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{task.description}}</h5>
+            <!-- <p class="card-text">{{task.description}}</p> -->
+            <a href="#" class="btn btn-success">Terminar</a>
+            <a href="{% url 'UpdateForm' task.pk %}" class="btn btn-info">Editar</a>
+            <a href="{% url 'Delete' task.pk %}" class="btn btn-danger">Borrar</a>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+{% else %}
+<h1 class="text-center mt-5">Inicia sesion o registrate</h1>
+{% endif %}
+
+{% endblock %}

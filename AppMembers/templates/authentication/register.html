@@ -1,0 +1,36 @@
+{% extends 'apps/base.html' %}
+
+{% block title %} CRUD Dajngo - Registro {% endblock %}
+
+{% block content %}
+
+<div class="shadow p-4 my-5 bg-body rounded">
+<h1>Registrate</h1>
+
+{% if form.errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Hubo un error al registrarse</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+<form action="{% url 'Register' %}" method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    {% comment %}
+    Asi tambien se puede hacer el formulario, llamando a cada uno de los campos
+    {{ form.username.label }}
+    {{ form.username }}
+    {{ form.password1.label }}
+    {{ form.password1 }}
+    {{ form.password2.label }}
+    {{ form.password2 }}
+    {% endcomment %}
+    <br>
+
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+
+</form>
+</div>
+{% endblock %}
